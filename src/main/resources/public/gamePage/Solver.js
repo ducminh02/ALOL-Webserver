@@ -1,4 +1,4 @@
-// var n = parseInt(window.prompt("Enter Board Size"));
+
 
 let game;
 let gameOptions = {
@@ -72,9 +72,7 @@ class playGame extends Phaser.Scene {
             this.gameArray[row][col].value = Phaser.Math.Wrap(this.gameArray[row][col].value + 1, 0, 3);
             this.gameArray[row][col].sprite.setFrame(2 * this.gameArray[row][col].value + this.gameArray[row][col].value % 2);
             this.changeLevel();
-            // if (this.boardComplete()) {
-            //
-            // }
+
         }
     }
 
@@ -89,17 +87,15 @@ class playGame extends Phaser.Scene {
 
 
 }
-// function sendBoard() {
-//     console.log(playGame.gameArray[0][0].value);
-//     // let data = JSON.stringify(this.gameArray);
-//     // let xhr = new XMLHttpRequest();
-//     // xhr.open("POST", "http://localhost:3000/board");
-//     // xhr.setRequestHeader("Content-Type", "application/json");
-//     // xhr.send(data);
-// }
+
 
 function sendBoard() {
     console.log(arrayToString(level));
+    $.post("http://localhost:8080/api/v1/board/sendInput", {
+        arrayToString
+    },function (response){
+        console.log(response);
+    });
 }
 
 const arrayToString = (level)  =>{

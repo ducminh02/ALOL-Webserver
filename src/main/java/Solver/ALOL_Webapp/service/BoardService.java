@@ -4,17 +4,14 @@ import Solver.ALOL_Webapp.model.Board;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.List;
 @Service
 public class BoardService {
     private Board board;
     private int n;
-//    public Board getEmptyBoard(int n) {
-//        Board board = new Board(n);
-//        board.emptyBoard();
-//        return board;
-//    }
+
 
     public void filltoken (int i, int j , char token, char[][] board) {
         board[i][j] = token;
@@ -38,7 +35,7 @@ public class BoardService {
 
             // if nums of lines doesnt match n
             if (lines.length != n) {
-                throw  new InputMismatchException("Invalid Board");
+                return new char[][]{};
 
             }
             for (int j = 0; j < n; j++) {
@@ -46,12 +43,12 @@ public class BoardService {
 
                 // if nums of columns doesnt match n
                 if (tokens.length != n) {
-                    throw  new InputMismatchException("Invalid Board");
+                    return new char[][]{};
 
                 }
                 for (int k = 0; k < tokens.length; k++) {
                     if (tokens[k] != '1' && tokens[k] != '0' && tokens[k] != 'x') {
-                        throw  new InputMismatchException("Invalid Board");
+                        return new char[][]{};
 
                     }
                     filltoken(j,k, tokens[k], board);
@@ -77,4 +74,20 @@ public class BoardService {
 
 
     }
+
+    public char[][] addStringBoard(String input, int n) {
+        Board board = new Board(n);
+        char[][] startingBoard = startingBoard(input, n);
+        board.setTheboard(startingBoard);
+
+        BoardLogik logic = new BoardLogik(board);
+        BoardSolve solve = new BoardSolve(board, logic);
+
+        solve.solvedBoard(board);
+        return solve.getSolution();
+    }
+
+
 }
+
+
