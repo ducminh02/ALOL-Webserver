@@ -100,8 +100,20 @@ class playGame extends Phaser.Scene {
 
 function sendBoard() {
     console.log(arrayToString(level));
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8080/api/v1/board/sendInput",
+        data: arrayToString(level),
+        // contentType: "application/json; charset=utf-8",
+        // dataType: "json",
+        success: function (response) {
+            console.log(response);
+        },
+        error: function (error) {
+            console.log("Error! Message:", error);
+        }
+    })
 }
-
 const arrayToString = (level)  =>{
     let str = '';
     for (let i = 0; i < gameOptions.rows; i++) {
