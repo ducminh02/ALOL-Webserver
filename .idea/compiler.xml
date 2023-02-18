@@ -8,11 +8,13 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="ALOL_Webapp" />
+        <module name="ALOL-Webserver" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="ALOL-Webserver" options="-parameters" />
       <module name="ALOL_Webapp" options="-parameters" />
     </option>
   </component>

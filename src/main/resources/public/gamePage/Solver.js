@@ -104,8 +104,9 @@ function sendBoard() {
         type: "POST",
         url: "http://localhost:8080/api/v1/board/sendInput",
         data: arrayToString(level),
-        // contentType: "application/json; charset=utf-8",
+        contentType: "application/json; charset=utf-8",
         // dataType: "json",
+        processData: false,
         success: function (response) {
             console.log(response);
         },

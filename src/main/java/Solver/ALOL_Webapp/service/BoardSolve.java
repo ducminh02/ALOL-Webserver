@@ -31,7 +31,7 @@ public class BoardSolve {
 
             // if nums of lines doesnt match n
             if (lines.length != n) {
-                throw  new InputMismatchException("Invalid Board");
+                throw new InputMismatchException("Invalid Board");
 
             }
             for (int j = 0; j < n; j++) {

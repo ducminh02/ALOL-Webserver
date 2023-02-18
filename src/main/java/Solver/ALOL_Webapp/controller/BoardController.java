@@ -31,7 +31,7 @@ public class BoardController{
 
     @PostMapping(path ="/sendInput")
     public char[][] sendInput(@RequestBody String input) {
-        return boardService.getSolvedBoard(input, 4);
+        return boardService.getSolvedBoard(input, 6);
     }
     
 }
