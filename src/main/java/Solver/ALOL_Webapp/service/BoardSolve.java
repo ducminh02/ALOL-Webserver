@@ -95,11 +95,17 @@ public class BoardSolve {
         List<Character> possibilities;
 
 
-        if (isFull(board)) {
-            System.out.println("Board solved!");
-            addToSolution(board.getTheboard());
+
+            if (isFull(board)) {
+                if (solution.size() <= 5) {
+                    System.out.println("Board solved!");
+                    addToSolution(board.getTheboard());
 //            System.out.println(Arrays.deepToString(board.getTheboard()));
-        }
+                }
+
+            }
+
+
 
         else {
             for (int x = 0; x < board.getN(); x++) {
@@ -127,7 +133,7 @@ public class BoardSolve {
         BoardLogik logic = new BoardLogik(board);
         BoardSolve boardSolve = new BoardSolve(board, logic);
 
-        boardSolve.board.setTheboard(boardSolve.startingBoard("0xxxxx/xxxxxx/xxxxxx/xxxxxx/xxxxxx/0xxxxx", 6));
+        boardSolve.board.setTheboard(boardSolve.startingBoard("xxxxxx/xxxxxx/xxxxxx/xxxxxx/xxxxxx/xxxxxx", 6));
 
         boardSolve.solvedBoard(boardSolve.getBoard());
         List<char[][]> results = boardSolve.solution;

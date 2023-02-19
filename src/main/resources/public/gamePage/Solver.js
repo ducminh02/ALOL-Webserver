@@ -1,4 +1,3 @@
-// var n = parseInt(window.prompt("Enter Board Size"));
 
 let game;
 let gameOptions = {
@@ -15,9 +14,24 @@ let level = [
     [0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0]
 ]
+function start() {
+    let gameConfig = {
+        type: Phaser.AUTO,
+        backgroundColor: 0x444444,
+        scale: {
+            mode: Phaser.Scale.FIT,
+            autoCenter: Phaser.Scale.CENTER_BOTH,
+            parent: "theSolver",
+            width: 600,
+            height: 600
+        },
+        scene: playGame
+    }
+    game = new Phaser.Game(gameConfig);
 
+}
 
-window.onload = function () {
+window.onload = function start() {
     let gameConfig = {
         type: Phaser.AUTO,
         backgroundColor: 0x444444,
@@ -59,11 +73,23 @@ class playGame extends Phaser.Scene {
         }
         console.log("test")
         this.input.on("pointerdown", this.changeTitle, this);
-        this.gameText = this.add.text(620, 20, "", {
-            fontFamily: "Arial",
-            fontSize: 24
-        });
+        // this.gameText = this.add.text(620, 20, "", {
+        //     fontFamily: "Arial",
+        //     fontSize: 24
+        // });
 
+    }
+     updateTiles(arr) {
+         for (let i = 0; i < gameOptions.rows; i++) {
+             for (let j = 0; j < gameOptions.cols; j++) {
+                 let tile = this.add.sprite(j * 100, i * 100, "tiles", arr[i][j]);
+                 tile.setOrigin(0);
+                 this.gameArray[i][j] = {
+                     value: arr[i][j],
+                     sprite: tile
+                 }
+             }
+         }
     }
     changeTitle(pointer) {
         let row = Math.floor(pointer.y / gameOptions.tileSize);
@@ -72,9 +98,6 @@ class playGame extends Phaser.Scene {
             this.gameArray[row][col].value = Phaser.Math.Wrap(this.gameArray[row][col].value + 1, 0, 3);
             this.gameArray[row][col].sprite.setFrame(2 * this.gameArray[row][col].value + this.gameArray[row][col].value % 2);
             this.changeLevel();
-            // if (this.boardComplete()) {
-            //
-            // }
         }
     }
 
@@ -89,14 +112,7 @@ class playGame extends Phaser.Scene {
 
 
 }
-// function sendBoard() {
-//     console.log(playGame.gameArray[0][0].value);
-//     // let data = JSON.stringify(this.gameArray);
-//     // let xhr = new XMLHttpRequest();
-//     // xhr.open("POST", "http://localhost:3000/board");
-//     // xhr.setRequestHeader("Content-Type", "application/json");
-//     // xhr.send(data);
-// }
+
 
 function sendBoard() {
     console.log(arrayToString(level));
@@ -109,11 +125,18 @@ function sendBoard() {
         processData: false,
         success: function (response) {
             console.log(response);
+
+
+            // playGame.scene.updateTiles(resultToArr(response));
+            level = resultToArr(response);
+            console.log(level);
+            start();
         },
         error: function (error) {
             console.log("Error! Message:", error);
         }
     })
+
 }
 const arrayToString = (level)  =>{
     let str = '';
@@ -135,3 +158,21 @@ const arrayToString = (level)  =>{
     }
     return str;
 };
+
+const resultToArr = (response) => {
+    let arr = [];
+    for (let i = 0; i < gameOptions.rows; i++) {
+        arr[i] = [];
+        for (let j = 0; j < gameOptions.cols; j++) {
+            if (response[i][j] === '0') {
+                arr[i][j] = 1;
+            }
+            if (response[i][j] === '1') {
+                arr[i][j] = 2;
+            }
+        }
+    }
+    return arr;
+}
+
+// module.exports = resultToArr(response);
