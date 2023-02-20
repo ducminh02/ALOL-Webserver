@@ -11,13 +11,55 @@ public class BoardSolve {
     private final Board board;
     private final BoardLogik logic;
 
-    private char[][] solution;
+    private List <char[][]> solution;
 
 
     public BoardSolve(Board board, BoardLogik logic) {
         this.board = board;
         this.logic = logic;
-        solution = new char[board.getN()][board.getN()];
+        solution = new ArrayList<>();
+    }
+
+    public void filltoken (int i, int j , char token, char[][] board) {
+        board[i][j] = token;
+    }
+    public char [][] startingBoard (String input, int n) {
+        char[][] board = new char[n][n];
+
+        for (int i = 0; i < n; i++) {
+            String[] lines = input.split("/");
+
+            // if nums of lines doesnt match n
+            if (lines.length != n) {
+                throw new InputMismatchException("Invalid Board");
+
+            }
+            for (int j = 0; j < n; j++) {
+                char[] tokens = lines[j].toCharArray();
+
+                // if nums of columns doesnt match n
+                if (tokens.length != n) {
+                    throw  new InputMismatchException("Invalid Board");
+
+                }
+                for (int k = 0; k < tokens.length; k++) {
+                    if (tokens[k] != '1' && tokens[k] != '0' && tokens[k] != 'x') {
+                        throw  new InputMismatchException("Invalid Board");
+
+                    }
+                    filltoken(j,k, tokens[k], board);
+                }
+            }
+        }
+        return board;
+    }
+
+    public void addToSolution (char[][] board) {
+        char[][] possibleSolution = new char[board.length][board[0].length];
+        for (int i = 0; i < board.length; i++) {
+            System.arraycopy(board[i], 0, possibleSolution[i], 0, board.length);
+        }
+        solution.add(possibleSolution);
     }
 
     public boolean isFull(Board boardd) {
@@ -52,12 +94,14 @@ public class BoardSolve {
         int j = 0;
         List<Character> possibilities;
 
+            if (isFull(board)) {
 
-        if (isFull(board)) {
-            System.out.println("Board solved!");
-            solution = this.board.getTheboard();
-
-        }
+                if (solution.size() <= 5) {
+                    System.out.println("Board solved!");
+                    addToSolution(this.board.getTheboard());
+                    System.out.println(Arrays.deepToString(this.board.getTheboard()));
+                }
+            }
 
         else {
             for (int x = 0; x < board.getN(); x++) {
@@ -74,9 +118,22 @@ public class BoardSolve {
                 board.getTheboard()[i][j] = c;
                 solvedBoard(board);
             }
-//            board.getTheboard()[i][j] = 'x';
+            board.getTheboard()[i][j] = 'x';
 
         }
     }
 
+
+    public static void main(String[] args) {
+        Board board = new Board(6);
+        BoardLogik logic = new BoardLogik(board);
+        BoardSolve boardSolve = new BoardSolve(board, logic);
+
+
+        boardSolve.board.setTheboard(boardSolve.startingBoard("xxxxxx/xxxxxx/xxxxxx/xxxxxx/xxxxxx/xxxxxx", 6));
+
+        boardSolve.solvedBoard(boardSolve.getBoard());
+        List<char[][]> results = boardSolve.solution;
+        System.out.println(results);
+    }
 }

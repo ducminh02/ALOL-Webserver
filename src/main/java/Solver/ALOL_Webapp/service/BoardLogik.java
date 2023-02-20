@@ -58,6 +58,24 @@ public class BoardLogik {
             int count1 = 0;
 
             for (int j = 0; j < board.getN(); j++) {
+                if (boardd.getTheboard()[i][j] == '0') {
+                    count0++;
+                }
+
+                if (boardd.getTheboard()[i][j] == '1') {
+                    count1++;
+                }
+            }
+            if (count0 > board.getN()/2 || count1 > board.getN()/2) {
+                return false;
+            }
+        }
+
+        for (int i = 0; i < board.getN(); i++) {
+            int count0 = 0;
+            int count1 = 0;
+
+            for (int j = 0; j < board.getN(); j++) {
                 if (boardd.getTheboard()[j][i] == '0') {
                     count0++;
                 }
@@ -71,6 +89,8 @@ public class BoardLogik {
                 return false;
             }
         }
+
+
         return true;
     }
 

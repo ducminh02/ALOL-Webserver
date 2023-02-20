@@ -3,14 +3,12 @@ package Solver.ALOL_Webapp.controller;
 import Solver.ALOL_Webapp.model.Board;
 import Solver.ALOL_Webapp.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping (path = "api/v1/board")
+@RequestMapping (path = "/api/v1/board")
 public class BoardController{
     private int n;
 //    private Board board;
@@ -22,8 +20,8 @@ public class BoardController{
     }
 
 //    @GetMapping
-//    public Board getEmptyBoard() {
-//        return boardService.getEmptyBoard(4);
+//    public String getEmptyBoard() {
+//        return boardService.getTest();
 //    }
 
     @GetMapping
@@ -31,5 +29,9 @@ public class BoardController{
         return boardService.getSolvedBoard("10x1/xx10/1x0x/0011", 4);
     }
 
+    @PostMapping(path ="/sendInput")
+    public char[][] sendInput(@RequestBody String input) {
+        return boardService.getSolvedBoard(input, 6);
+    }
     
 }
