@@ -1,4 +1,6 @@
 
+alert("Press on the board to set it to starting state of the game. Then Press Enter twice to solve. (it might take a second or 2 to solve)");
+
 let game;
 let gameOptions = {
     rows: 6,
@@ -14,22 +16,22 @@ let level = [
     [0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0]
 ]
-function start() {
-    let gameConfig = {
-        type: Phaser.AUTO,
-        backgroundColor: 0x444444,
-        scale: {
-            mode: Phaser.Scale.FIT,
-            autoCenter: Phaser.Scale.CENTER_BOTH,
-            parent: "theSolver",
-            width: 600,
-            height: 600
-        },
-        scene: playGame
-    }
-    game = new Phaser.Game(gameConfig);
-
-}
+// function start() {
+//     let gameConfig = {
+//         type: Phaser.AUTO,
+//         backgroundColor: 0x444444,
+//         scale: {
+//             mode: Phaser.Scale.FIT,
+//             autoCenter: Phaser.Scale.CENTER_BOTH,
+//             parent: "theSolver",
+//             width: 600,
+//             height: 600
+//         },
+//         scene: playGame
+//     }
+//     game = new Phaser.Game(gameConfig);
+//
+// }
 
 window.onload = function start() {
     let gameConfig = {
@@ -49,6 +51,7 @@ window.onload = function start() {
 }
 
 class playGame extends Phaser.Scene {
+    enterKey;
     constructor() {
         super("PlayGame");
     }
@@ -59,6 +62,7 @@ class playGame extends Phaser.Scene {
             });
     }
     create() {
+        this.enterKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
         this.gameArray = [];
         for (let i = 0; i < gameOptions.rows; i++) {
             this.gameArray[i] = [];
@@ -71,7 +75,7 @@ class playGame extends Phaser.Scene {
                 }
             }
         }
-        console.log("test")
+        console.log(this.gameArray)
         this.input.on("pointerdown", this.changeTitle, this);
         // this.gameText = this.add.text(620, 20, "", {
         //     fontFamily: "Arial",
@@ -79,17 +83,22 @@ class playGame extends Phaser.Scene {
         // });
 
     }
-     updateTiles(arr) {
-         for (let i = 0; i < gameOptions.rows; i++) {
-             for (let j = 0; j < gameOptions.cols; j++) {
-                 let tile = this.add.sprite(j * 100, i * 100, "tiles", arr[i][j]);
-                 tile.setOrigin(0);
-                 this.gameArray[i][j] = {
-                     value: arr[i][j],
-                     sprite: tile
-                 }
-             }
-         }
+
+    update () {
+        // If Enter is pressed
+        if (Phaser.Input.Keyboard.JustDown(this.enterKey)) {
+            sendBoard();
+            for (let i = 0; i < gameOptions.rows; i++) {
+                for (let j = 0; j < gameOptions.cols; j++) {
+                    if (this.gameArray[i]!== undefined && this.gameArray[i][j] !== undefined) {
+                        this.gameArray[i][j].value = level[i][j];
+                        this.gameArray[i][j].sprite.setFrame(2 * this.gameArray[i][j].value + this.gameArray[i][j].value % 2);
+                    }
+                }
+            }
+            console.log(this.gameArray);
+        }
+
     }
     changeTitle(pointer) {
         let row = Math.floor(pointer.y / gameOptions.tileSize);
@@ -130,12 +139,16 @@ function sendBoard() {
             // playGame.scene.updateTiles(resultToArr(response));
             level = resultToArr(response);
             console.log(level);
-            start();
+            // console.log(playGame.prototype.gameArray);
+            // playGame.prototype.updateTiles();
         },
         error: function (error) {
             console.log("Error! Message:", error);
+            alert("Invalid Board!");
         }
     })
+
+    // playGame.prototype.update();
 
 }
 const arrayToString = (level)  =>{
