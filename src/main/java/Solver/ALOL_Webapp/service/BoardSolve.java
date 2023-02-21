@@ -5,13 +5,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.*;
+
 @Getter
 @Setter
 public class BoardSolve {
     private final Board board;
     private final BoardLogik logic;
 
-    private List <char[][]> solution;
+    private List<char[][]> solution;
 
 
     public BoardSolve(Board board, BoardLogik logic) {
@@ -20,10 +21,11 @@ public class BoardSolve {
         solution = new ArrayList<>();
     }
 
-    public void filltoken (int i, int j , char token, char[][] board) {
+    public void filltoken(int i, int j, char token, char[][] board) {
         board[i][j] = token;
     }
-    public char [][] startingBoard (String input, int n) {
+
+    public char[][] startingBoard(String input, int n) {
         char[][] board = new char[n][n];
 
         for (int i = 0; i < n; i++) {
@@ -39,22 +41,22 @@ public class BoardSolve {
 
                 // if nums of columns doesnt match n
                 if (tokens.length != n) {
-                    throw  new InputMismatchException("Invalid Board");
+                    throw new InputMismatchException("Invalid Board");
 
                 }
                 for (int k = 0; k < tokens.length; k++) {
                     if (tokens[k] != '1' && tokens[k] != '0' && tokens[k] != 'x') {
-                        throw  new InputMismatchException("Invalid Board");
+                        throw new InputMismatchException("Invalid Board");
 
                     }
-                    filltoken(j,k, tokens[k], board);
+                    filltoken(j, k, tokens[k], board);
                 }
             }
         }
         return board;
     }
 
-    public void addToSolution (char[][] board) {
+    public void addToSolution(char[][] board) {
         char[][] possibleSolution = new char[board.length][board[0].length];
         for (int i = 0; i < board.length; i++) {
             System.arraycopy(board[i], 0, possibleSolution[i], 0, board.length);
@@ -78,32 +80,28 @@ public class BoardSolve {
 
         boardd.getTheboard()[i][j] = '0';
 
-        if (logic.checkall(boardd)) {
+        if (logic.isBoardValid(boardd)) {
             possibilities.add('0');
         }
         boardd.getTheboard()[i][j] = '1';
-        if (logic.checkall(boardd)) {
+        if (logic.isBoardValid(boardd)) {
             possibilities.add('1');
         }
         return possibilities;
     }
 
-    public void solvedBoard (Board board) {
-
+    public void solveBoard(Board board) {
         int i = 0;
         int j = 0;
         List<Character> possibilities;
 
-            if (isFull(board)) {
-
-                if (solution.size() <= 5) {
-                    System.out.println("Board solved!");
-                    addToSolution(this.board.getTheboard());
-                    System.out.println(Arrays.deepToString(this.board.getTheboard()));
-                }
+        if (isFull(board)) {
+            if (solution.size() <= 5) {
+                System.out.println("Board solved!");
+                addToSolution(board.getTheboard());
+                System.out.println(Arrays.deepToString(board.getTheboard()));
             }
-
-        else {
+        } else {
             for (int x = 0; x < board.getN(); x++) {
                 for (int y = 0; y < board.getN(); y++) {
                     if (board.getTheboard()[x][y] == 'x') {
@@ -113,13 +111,12 @@ public class BoardSolve {
                     }
                 }
             }
-            possibilities = possibleEntries(board, i , j);
-            for (char c : possibilities ) {
+            possibilities = possibleEntries(board, i, j);
+            for (char c : possibilities) {
                 board.getTheboard()[i][j] = c;
-                solvedBoard(board);
+                solveBoard(board);
             }
             board.getTheboard()[i][j] = 'x';
-
         }
     }
 
@@ -132,7 +129,7 @@ public class BoardSolve {
 
         boardSolve.board.setTheboard(boardSolve.startingBoard("xxxxxx/xxxxxx/xxxxxx/xxxxxx/xxxxxx/xxxxxx", 6));
 
-        boardSolve.solvedBoard(boardSolve.getBoard());
+        boardSolve.solveBoard(boardSolve.getBoard());
         List<char[][]> results = boardSolve.solution;
         System.out.println(results);
     }

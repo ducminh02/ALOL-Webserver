@@ -7,8 +7,6 @@ import java.util.*;
 
 @Getter
 @Setter
-
-
 public class Board {
     private final int n;
     private char[][] theboard;
