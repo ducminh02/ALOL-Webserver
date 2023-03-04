@@ -1,13 +1,17 @@
 # ALOL-Webserver
 A Webserver that simulates and solves the mobile game A Life Of Logic https://apps.apple.com/us/app/alol-nostalgia-haven-puzzle/id1329455663
 
-A Life of Logic (ALOL) is a logical puzzle solving game where the objective is to fill a board with two different tiles (0 and 1) while satisfying 3 rules:
+A Life of Logic (ALOL) is a logical puzzle solving game where the objective is to fill a board with two different tiles (0 and 1) while satisfying the following 3 rules:
 
-There should be no more than 2 of the same tiles on the same row/column
-The amount of 0s and 1s should be the same for every row/column
-There should be no identical rows/columns
+-There should be no more than 2 of the same tiles on the same row/column
+
+-The amount of 0s and 1s should be the same for every row/column
+
+-There should be no identical rows/columns
+
 
 How to use:
+- Clone the repository to your device (I'll asume you know how to do that or you can learn it here https://www.youtube.com/watch?v=CKcqniGu3tA)
 - Open and start AlolWebappAplication.java
 - Open your browser and go to: localhost:8080/startingPage/index.html
 - Click on Get Started
